@@ -74,7 +74,6 @@ func TestServerInitialization(t *testing.T) {
 	}
 }
 
-// test currency conversion
 const bufSize = 1024 * 1024
 
 var lis *bufconn.Listener
@@ -94,6 +93,7 @@ func bufDialer(context.Context, string) (net.Conn, error) {
 	return lis.Dial()
 }
 
+// test currency conversion
 func TestServer_Convert(t *testing.T) {
 	ctx := context.Background()
 	conn, err := grpc.DialContext(
@@ -117,13 +117,18 @@ func TestServer_Convert(t *testing.T) {
 		receiverCurrency string
 		amount           float64
 		expected         float64
+		expectError      bool
 	}{
-		{"INR", "USD", 100, 1.3},
-		{"INR", "EUR", 100, 1.1},
-		{"USD", "INR", 100, 7400},
-		{"USD", "EUR", 100, 85},
-		{"EUR", "USD", 100, 118},
-		{"EUR", "INR", 100, 8700},
+		{"", "USD", 100, 0, true},       // Invalid sender currency
+		{"INR", "", 100, 0, true},       // Invalid receiver currency
+		{"INR", "USD", -100, 0, true},   // Invalid amount
+		{"USD", "USD", 100, 100, false}, // No conversion needed
+		{"INR", "USD", 100, 1.3, false},
+		{"INR", "EUR", 100, 1.1, false},
+		{"USD", "INR", 100, 7400, false},
+		{"USD", "EUR", 100, 85, false},
+		{"EUR", "USD", 100, 118, false},
+		{"EUR", "INR", 100, 8700, false},
 	}
 
 	for _, tc := range testCases {
@@ -134,6 +139,13 @@ func TestServer_Convert(t *testing.T) {
 		}
 
 		resp, err := client.Convert(ctx, req)
+		if tc.expectError {
+			if err == nil {
+				t.Errorf("Expected error for input %v, got none", tc)
+			}
+			continue
+		}
+
 		if err != nil {
 			t.Fatalf("Convert failed: %v", err)
 		}

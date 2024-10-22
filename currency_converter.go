@@ -7,6 +7,7 @@ import (
 	"google.golang.org/grpc"
 	"log"
 	"net"
+	"strconv"
 )
 
 // Conversion rates
@@ -25,13 +26,26 @@ func (s *server) Convert(ctx context.Context, req *pb.ConvertRequest) (*pb.Conve
 	receiverCurrency := req.GetReceiverCurrencyType()
 	amount := req.GetAmount()
 
+	if amount <= 0 || senderCurrency == "" || receiverCurrency == "" {
+		return nil, fmt.Errorf("invalid input")
+	}
+	if senderCurrency == receiverCurrency { // No conversion needed
+		return &pb.ConvertResponse{ConvertedAmount: amount}, nil
+	}
+
 	// Call the conversion logic
 	convertedAmount, err := convertCurrency(senderCurrency, receiverCurrency, amount)
 	if err != nil {
 		return nil, err
 	}
 
-	return &pb.ConvertResponse{ConvertedAmount: convertedAmount}, nil
+	// Format the converted amount to two decimal places
+	formattedAmount, err := strconv.ParseFloat(fmt.Sprintf("%.2f", convertedAmount), 64)
+	if err != nil {
+		return nil, fmt.Errorf("failed to format converted amount: %v", err)
+	}
+
+	return &pb.ConvertResponse{ConvertedAmount: formattedAmount}, nil
 }
 
 func convertCurrency(senderCurrency, receiverCurrency string, amount float64) (float64, error) {
