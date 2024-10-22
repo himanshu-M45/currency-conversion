@@ -1,5 +1,7 @@
 github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
 github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/pascalallen/grpc-go v0.0.0-20231201140135-d05e7081bf92 h1:Fn6k9yyZbMp8RmjowNhsuK0WoGP//G+ophVCd7i63AQ=
+github.com/pascalallen/grpc-go v0.0.0-20231201140135-d05e7081bf92/go.mod h1:mbXlE2HP56AmPZHRWS58y37VpO7m/5HA4lBbnRooQgQ=
 golang.org/x/net v0.28.0 h1:a9JDOJc5GMUJ0+UDqmLT86WiEy7iWyIhz8gz8E4e5hE=
 golang.org/x/net v0.28.0/go.mod h1:yqtgsTWOOnlGLG9GFRrK3++bGOUEkNBoHZc8MEDWPNg=
 golang.org/x/sys v0.24.0 h1:Twjiwq9dn6R1fQcyiK+wQyHWfaz/BJB+YIpzU/Cv3Xg=

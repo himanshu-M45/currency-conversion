@@ -2,7 +2,10 @@ module currency-conversion
 
 go 1.23.0
 
-require google.golang.org/grpc v1.67.1
+require (
+	github.com/pascalallen/grpc-go v0.0.0-20231201140135-d05e7081bf92
+	google.golang.org/grpc v1.67.1
+)
 
 require (
 	golang.org/x/net v0.28.0 // indirect

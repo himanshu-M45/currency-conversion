@@ -2,16 +2,18 @@ syntax = "proto3";
 
 package currency;
 
+option go_package = "/proto;currency";
+
 service CurrencyConverter {
-rpc Convert (ConvertRequest) returns (ConvertResponse);
+  rpc Convert (ConvertRequest) returns (ConvertResponse);
 }
 
 message ConvertRequest {
-string senderCurrencyType = 1;
-string receiverCurrencyType = 2;
-double amount = 3;
+  string senderCurrencyType = 1;
+  string receiverCurrencyType = 2;
+  double amount = 3;
 }
 
 message ConvertResponse {
-double convertedAmount = 1;
+  double convertedAmount = 1;
 }
