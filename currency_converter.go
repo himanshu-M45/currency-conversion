@@ -1,8 +1,8 @@
-package main
+package currency
 
 import (
 	"context"
-	pb "currency-conversion/proto"
+	"currency-conversion/proto"
 	"fmt"
 	"google.golang.org/grpc"
 	"log"
@@ -18,10 +18,10 @@ var conversionRates = map[string]map[string]float64{
 }
 
 type server struct {
-	pb.UnimplementedCurrencyConverterServer
+	proto.UnimplementedCurrencyConverterServer
 }
 
-func (s *server) Convert(ctx context.Context, req *pb.ConvertRequest) (*pb.ConvertResponse, error) {
+func (s *server) Convert(_ context.Context, req *proto.ConvertRequest) (*proto.ConvertResponse, error) {
 	senderCurrency := req.GetSenderCurrencyType()
 	receiverCurrency := req.GetReceiverCurrencyType()
 	amount := req.GetAmount()
@@ -30,7 +30,7 @@ func (s *server) Convert(ctx context.Context, req *pb.ConvertRequest) (*pb.Conve
 		return nil, fmt.Errorf("invalid input")
 	}
 	if senderCurrency == receiverCurrency { // No conversion needed
-		return &pb.ConvertResponse{ConvertedAmount: amount}, nil
+		return &proto.ConvertResponse{ConvertedAmount: amount}, nil
 	}
 
 	// Call the conversion logic
@@ -45,7 +45,7 @@ func (s *server) Convert(ctx context.Context, req *pb.ConvertRequest) (*pb.Conve
 		return nil, fmt.Errorf("failed to format converted amount: %v", err)
 	}
 
-	return &pb.ConvertResponse{ConvertedAmount: formattedAmount}, nil
+	return &proto.ConvertResponse{ConvertedAmount: formattedAmount}, nil
 }
 
 func convertCurrency(senderCurrency, receiverCurrency string, amount float64) (float64, error) {
@@ -65,7 +65,7 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 	s := grpc.NewServer()
-	pb.RegisterCurrencyConverterServer(s, &server{})
+	proto.RegisterCurrencyConverterServer(s, &server{})
 	log.Println("Server started at port 50051")
 	if err := s.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %v", err)
