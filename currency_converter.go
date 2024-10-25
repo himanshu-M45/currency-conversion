@@ -11,11 +11,7 @@ import (
 )
 
 // Conversion rates
-var conversionRates = map[string]map[string]float64{
-	"USD": {"EUR": 0.85, "INR": 74.0},
-	"EUR": {"USD": 1.18, "INR": 87.0},
-	"INR": {"USD": 0.013, "EUR": 0.011},
-}
+var conversionRates map[string]float64
 
 type server struct {
 	proto.UnimplementedCurrencyConverterServer
@@ -49,14 +45,26 @@ func (s *server) Convert(_ context.Context, req *proto.ConvertRequest) (*proto.C
 }
 
 func convertCurrency(senderCurrency, receiverCurrency string, amount float64) (float64, error) {
-	// Check if senderCurrency exists in the conversionRates
-	if rates, ok := conversionRates[senderCurrency]; ok {
-		if rate, ok := rates[receiverCurrency]; ok {
-			return amount * rate, nil
-		}
+	senderRate, senderOk := conversionRates[senderCurrency]
+	receiverRate, receiverOk := conversionRates[receiverCurrency]
+
+	if !senderOk {
+		return 0, fmt.Errorf("unsupported sender currency: %s", senderCurrency)
+	}
+	if !receiverOk {
 		return 0, fmt.Errorf("unsupported receiver currency: %s", receiverCurrency)
 	}
-	return 0, fmt.Errorf("unsupported sender currency: %s", senderCurrency)
+
+	amountInBaseCurrency := amount / senderRate
+	return amountInBaseCurrency * receiverRate, nil
+}
+
+func init() {
+	var err error
+	conversionRates, err = LoadConversionRates("conversion_rates.xml")
+	if err != nil {
+		log.Fatalf("failed to load conversion rates: %v", err)
+	}
 }
 
 func main() {

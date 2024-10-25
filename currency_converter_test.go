@@ -91,7 +91,7 @@ func TestConvert_SuccessfulConversion_INRtoUSD(t *testing.T) {
 		ReceiverCurrencyType: "USD",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 1.3} // Assuming the conversion rate is 0.013
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 1.3}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -106,7 +106,7 @@ func TestConvert_SuccessfulConversion_INRtoEUR(t *testing.T) {
 		ReceiverCurrencyType: "EUR",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 1.1} // Assuming the conversion rate is 0.011
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 1.1}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -121,7 +121,7 @@ func TestConvert_SuccessfulConversion_USDtoINR(t *testing.T) {
 		ReceiverCurrencyType: "INR",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 7400} // Assuming the conversion rate is 74.0
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 7400}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -136,7 +136,7 @@ func TestConvert_SuccessfulConversion_USDtoEUR(t *testing.T) {
 		ReceiverCurrencyType: "EUR",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 85.0} // Assuming the conversion rate is 0.85
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 85.0}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -151,7 +151,7 @@ func TestConvert_SuccessfulConversion_EURtoUSD(t *testing.T) {
 		ReceiverCurrencyType: "USD",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 118.0} // Assuming the conversion rate is 1.18
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 118.0}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -166,7 +166,7 @@ func TestConvert_SuccessfulConversion_EURtoINR(t *testing.T) {
 		ReceiverCurrencyType: "INR",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 8700} // Assuming the conversion rate is 87.0
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 8700}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -211,7 +211,7 @@ func TestConvert_SuccessfulConversion(t *testing.T) {
 		ReceiverCurrencyType: "EUR",
 		Amount:               100,
 	}
-	expectedResp := &pb.ConvertResponse{ConvertedAmount: 85.0} // Assuming the conversion rate is 0.85
+	expectedResp := &pb.ConvertResponse{ConvertedAmount: 85.0}
 	mockServer.On("Convert", mock.Anything, req).Return(expectedResp, nil)
 
 	resp, err := mockServer.Convert(context.Background(), req)
@@ -238,7 +238,7 @@ func TestConvert_UnsupportedReceiverCurrency(t *testing.T) {
 	mockServer := new(mockCurrencyConverterServer)
 	req := &pb.ConvertRequest{
 		SenderCurrencyType:   "USD",
-		ReceiverCurrencyType: "GBP",
+		ReceiverCurrencyType: "JPY",
 		Amount:               100,
 	}
 	mockServer.On("Convert", mock.Anything, req).Return((*pb.ConvertResponse)(nil), errors.New("unsupported receiver currency: GBP"))

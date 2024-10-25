@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conversionRates>
+    <currency>
+        <code>INR</code>
+        <baseValue>84.05</baseValue>
+    </currency>
+    <currency>
+        <code>USD</code>
+        <baseValue>1.0</baseValue>
+    </currency>
+    <currency>
+        <code>EUR</code>
+        <baseValue>0.92</baseValue>
+    </currency>
+</conversionRates>
