@@ -4,7 +4,7 @@ package currency;
 
 option go_package = "/proto;currency";
 
-service CurrencyConverter {
+service CurrencyConversion {
   rpc Convert (ConvertRequest) returns (ConvertResponse);
 }
 
