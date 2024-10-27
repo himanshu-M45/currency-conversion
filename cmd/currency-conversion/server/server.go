@@ -33,7 +33,7 @@ func RunServer() {
 
 func init() {
 	var err error
-	service.ConversionRates, err = helper.LoadConversionRates("internal/app/cc/helper/conversion_rates.xml")
+	service.ConversionRates, err = helper.LoadConversionRates("conversion_rates.xml")
 	fmt.Println("Successfully loaded conversion rates")
 	if err != nil {
 		log.Fatalf("failed to load conversion rates: %v", err)
